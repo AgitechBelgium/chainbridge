@@ -1,0 +1,1287 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChainBridge.be — Conformité Crypto en Belgique</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --midnight: #0a0f1c;
+            --deep-blue: #111827;
+            --accent-gold: #d4a853;
+            --accent-gold-light: #e8c97a;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --border-subtle: rgba(212, 168, 83, 0.2);
+            --gradient-gold: linear-gradient(135deg, #d4a853 0%, #f0d78c 50%, #d4a853 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background-color: var(--midnight);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Subtle background pattern */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(ellipse at 20% 20%, rgba(212, 168, 83, 0.03) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(212, 168, 83, 0.02) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: linear-gradient(to bottom, var(--midnight) 0%, transparent 100%);
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-decoration: none;
+            letter-spacing: -0.02em;
+        }
+
+        .logo span {
+            color: var(--accent-gold);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-gold);
+        }
+
+        .nav-cta {
+            background: transparent;
+            border: 1px solid var(--accent-gold);
+            color: var(--accent-gold);
+            padding: 0.7rem 1.5rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .nav-cta:hover {
+            background: var(--accent-gold);
+            color: var(--midnight);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 8rem 5% 4rem;
+            position: relative;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            background: rgba(212, 168, 83, 0.1);
+            border: 1px solid var(--border-subtle);
+            padding: 0.5rem 1.2rem;
+            border-radius: 100px;
+            font-size: 0.85rem;
+            color: var(--accent-gold);
+            margin-bottom: 2rem;
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        .hero-badge svg {
+            stroke: var(--accent-gold);
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            max-width: 900px;
+            animation: fadeInUp 0.8s ease 0.1s forwards;
+            opacity: 0;
+        }
+
+        .hero h1 .highlight {
+            background: var(--gradient-gold);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin-bottom: 3rem;
+            animation: fadeInUp 0.8s ease 0.2s forwards;
+            opacity: 0;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 1rem;
+            animation: fadeInUp 0.8s ease 0.3s forwards;
+            opacity: 0;
+        }
+
+        .btn-primary {
+            background: var(--gradient-gold);
+            color: var(--midnight);
+            padding: 1rem 2rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 40px rgba(212, 168, 83, 0.3);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-primary);
+            padding: 1rem 2rem;
+            font-size: 1rem;
+            font-weight: 500;
+            border: 1px solid var(--text-muted);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--text-primary);
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            animation: bounce 2s infinite;
+        }
+
+        .scroll-indicator svg {
+            width: 24px;
+            height: 24px;
+            stroke: var(--text-muted);
+        }
+
+        /* Trust Bar */
+        .trust-bar {
+            padding: 3rem 5%;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .trust-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 4rem;
+            flex-wrap: wrap;
+        }
+
+        .trust-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .trust-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent-gold);
+        }
+
+        .trust-label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        /* Problem Section */
+        .problem {
+            padding: 6rem 5%;
+            background: var(--deep-blue);
+        }
+
+        .problem-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .section-label {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--accent-gold);
+            margin-bottom: 1rem;
+        }
+
+        .problem h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            font-weight: 600;
+            margin-bottom: 2rem;
+            line-height: 1.3;
+        }
+
+        .problem-list {
+            text-align: left;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .problem-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding: 1.25rem;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 8px;
+        }
+
+        .problem-icon {
+            flex-shrink: 0;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(212, 168, 83, 0.1);
+            border-radius: 8px;
+        }
+
+        .problem-icon svg {
+            stroke: var(--accent-gold);
+        }
+
+        .problem-item p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        .problem-item strong {
+            color: var(--text-primary);
+        }
+
+        /* Services Section */
+        .services {
+            padding: 6rem 5%;
+        }
+
+        .services-header {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 4rem;
+        }
+
+        .services-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .services-header p {
+            color: var(--text-secondary);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .service-card {
+            background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
+            border: 1px solid rgba(255,255,255,0.06);
+            padding: 2rem;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--gradient-gold);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+
+        .service-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--border-subtle);
+        }
+
+        .service-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .service-icon {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(212, 168, 83, 0.1);
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+        }
+
+        .service-icon svg {
+            stroke: var(--accent-gold);
+        }
+
+        .service-card h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .service-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .service-features {
+            list-style: none;
+            margin-bottom: 1.5rem;
+        }
+
+        .service-features li {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .service-features li::before {
+            content: '✓';
+            color: var(--accent-gold);
+            font-weight: bold;
+        }
+
+        .service-price {
+            font-size: 0.9rem;
+            color: var(--accent-gold);
+            font-weight: 500;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255,255,255,0.06);
+        }
+
+        /* Process Section */
+        .process {
+            padding: 6rem 5%;
+            background: var(--deep-blue);
+        }
+
+        .process-header {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 4rem;
+        }
+
+        .process-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .process-steps {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .process-step {
+            flex: 1;
+            min-width: 200px;
+            max-width: 280px;
+            text-align: center;
+            position: relative;
+        }
+
+        .step-number {
+            width: 50px;
+            height: 50px;
+            border: 2px solid var(--accent-gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--accent-gold);
+            margin: 0 auto 1.5rem;
+        }
+
+        .process-step h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .process-step p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* Expertise Section */
+        .expertise {
+            padding: 6rem 5%;
+        }
+
+        .expertise-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .expertise-text h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.8rem, 4vw, 2.2rem);
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .expertise-text p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .expertise-credentials {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .credential {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            background: rgba(212, 168, 83, 0.1);
+            border: 1px solid var(--border-subtle);
+            padding: 0.6rem 1rem;
+            border-radius: 100px;
+            font-size: 0.85rem;
+            color: var(--accent-gold);
+        }
+
+        .credential svg {
+            stroke: var(--accent-gold);
+            flex-shrink: 0;
+        }
+
+        .expertise-visual {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .stat-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.06);
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .stat-icon {
+            width: 56px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(212, 168, 83, 0.1);
+            border-radius: 10px;
+            flex-shrink: 0;
+        }
+
+        .stat-icon svg {
+            stroke: var(--accent-gold);
+        }
+
+        .stat-info h4 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-gold);
+        }
+
+        .stat-info p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* Ethics Section */
+        .ethics {
+            padding: 6rem 5%;
+            background: var(--deep-blue);
+        }
+
+        .ethics-content {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .ethics-text h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.8rem, 4vw, 2.2rem);
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .ethics-text p {
+            color: var(--text-secondary);
+            margin-bottom: 1.25rem;
+            line-height: 1.7;
+        }
+
+        .ethics-principles {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .principle-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-left: 3px solid var(--accent-gold);
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .principle-card:hover {
+            background: rgba(255,255,255,0.04);
+            border-left-color: var(--accent-gold-light);
+        }
+
+        .principle-icon {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(212, 168, 83, 0.08);
+            border-radius: 8px;
+            margin-bottom: 0.75rem;
+        }
+
+        .principle-icon svg {
+            stroke: var(--accent-gold);
+        }
+
+        .principle-card h4 {
+            font-size: 1.05rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .principle-card p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* CTA Section */
+        .cta {
+            padding: 6rem 5%;
+            background: linear-gradient(135deg, rgba(212, 168, 83, 0.1) 0%, rgba(212, 168, 83, 0.02) 100%);
+            border-top: 1px solid var(--border-subtle);
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .cta-content {
+            max-width: 700px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .cta h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .cta p {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        /* Contact Form */
+        .contact-form {
+            max-width: 500px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .form-group {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 0.9rem 1rem;
+            font-size: 1rem;
+            color: var(--text-primary);
+            font-family: inherit;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent-gold);
+        }
+
+        .form-group select {
+            cursor: pointer;
+        }
+
+        .form-group select option {
+            background: var(--deep-blue);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-submit {
+            margin-top: 1rem;
+        }
+
+        /* Footer */
+        footer {
+            padding: 4rem 5% 2rem;
+            background: var(--deep-blue);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .footer-brand .logo {
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .footer-brand p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            max-width: 300px;
+        }
+
+        .footer-links h4 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-gold);
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-top: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .footer-bottom p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .footer-legal {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .footer-legal a {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-legal a:hover {
+            color: var(--accent-gold);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            40% {
+                transform: translateX(-50%) translateY(-10px);
+            }
+            60% {
+                transform: translateX(-50%) translateY(-5px);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero-cta {
+                flex-direction: column;
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .trust-content {
+                gap: 2rem;
+            }
+
+            .expertise-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .ethics-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .form-row {
+                flex-direction: column;
+            }
+
+            .footer-content {
+                flex-direction: column;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <a href="#" class="logo">Chain<span>Bridge</span></a>
+        <ul class="nav-links">
+            <li><a href="#services">Services</a></li>
+            <li><a href="#process">Processus</a></li>
+            <li><a href="#expertise">Expertise</a></li>
+        </ul>
+        <button class="nav-cta" onclick="document.getElementById('contact').scrollIntoView({behavior: 'smooth'})">Contact</button>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-badge">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+            Cabinet belge spécialisé en conformité crypto
+        </div>
+        <h1>Le pont entre vos <span class="highlight">actifs numériques</span> et la finance traditionnelle</h1>
+        <p class="hero-subtitle">Rapatriement bancaire, obligations fiscales, transmission patrimoniale — nous accompagnons les détenteurs d'actifs numériques vers une conformité totale avec le cadre réglementaire belge.</p>
+        <div class="hero-cta">
+            <button class="btn-primary" onclick="document.getElementById('contact').scrollIntoView({behavior: 'smooth'})">Solliciter un diagnostic</button>
+            <button class="btn-secondary" onclick="document.getElementById('services').scrollIntoView({behavior: 'smooth'})">Découvrir nos prestations</button>
+        </div>
+        <div class="scroll-indicator">
+            <span>Découvrir</span>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+            </svg>
+        </div>
+    </section>
+
+    <!-- Trust Bar -->
+    <section class="trust-bar">
+        <div class="trust-content">
+            <div class="trust-item">
+                <div class="trust-number">2017</div>
+                <div class="trust-label">Présence dans l'écosystème</div>
+            </div>
+            <div class="trust-item">
+                <div class="trust-number">3</div>
+                <div class="trust-label">Domaines d'expertise</div>
+            </div>
+            <div class="trust-item">
+                <div class="trust-number">100%</div>
+                <div class="trust-label">Ancrage belge</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problem Section -->
+    <section class="problem">
+        <div class="problem-content">
+            <div class="section-label">Le constat</div>
+            <h2>Des actifs légitimes.<br>Une conformité complexe à établir.</h2>
+            <div class="problem-list">
+                <div class="problem-item">
+                    <div class="problem-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
+                    </div>
+                    <p><strong>Exigences bancaires renforcées</strong> — Les établissements financiers requièrent une documentation AML exhaustive que peu de détenteurs savent produire.</p>
+                </div>
+                <div class="problem-item">
+                    <div class="problem-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><rect width="20" height="14" x="2" y="6" rx="2"/></svg>
+                    </div>
+                    <p><strong>Expertise comptable limitée</strong> — La plupart des professionnels du chiffre ne maîtrisent pas les spécificités des actifs numériques.</p>
+                </div>
+                <div class="problem-item">
+                    <div class="problem-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m3 21 1.9-5.7a8.5 8.5 0 1 1 3.8 3.8z"/></svg>
+                    </div>
+                    <p><strong>Cadre fiscal incertain</strong> — La qualification fiscale des plus-values crypto en Belgique reste source d'insécurité juridique face au SPF Finances.</p>
+                </div>
+                <div class="problem-item">
+                    <div class="problem-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                    </div>
+                    <p><strong>Transmission patrimoniale complexe</strong> — Les successions impliquant des actifs numériques posent des défis techniques et juridiques inédits.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services" id="services">
+        <div class="services-header">
+            <div class="section-label">Nos prestations</div>
+            <h2>Un accompagnement adapté à chaque situation</h2>
+            <p>De la constitution de dossiers AML à la gestion successorale, nous proposons une gamme complète de services en conformité des actifs numériques. Chaque mission fait l'objet d'un entretien préalable à l'issue duquel nous convenons ensemble d'une tarification en forfait ou en régie, adaptée à la complexité de votre dossier.</p>
+        </div>
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" x2="21" y1="22" y2="22"/><line x1="6" x2="6" y1="18" y2="11"/><line x1="10" x2="10" y1="18" y2="11"/><line x1="14" x2="14" y1="18" y2="11"/><line x1="18" x2="18" y1="18" y2="11"/><polygon points="12 2 20 7 4 7"/></svg>
+                </div>
+                <h3>Rapatriement bancaire</h3>
+                <p>Constitution de dossiers AML complets pour l'ouverture de compte ou le transfert de fonds vers un établissement financier belge.</p>
+                <ul class="service-features">
+                    <li>Consolidation des historiques multi-plateformes</li>
+                    <li>Traçabilité on-chain documentée</li>
+                    <li>Rapport structuré conforme aux exigences compliance</li>
+                    <li>Accompagnement jusqu'à validation bancaire</li>
+                </ul>
+                <div class="service-price">Forfait ou régie selon complexité</div>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                </div>
+                <h3>Conformité fiscale</h3>
+                <p>Analyse de votre situation fiscale et préparation de votre déclaration en conformité avec la législation belge en vigueur.</p>
+                <ul class="service-features">
+                    <li>Qualification juridique des opérations</li>
+                    <li>Calcul des plus-values imposables</li>
+                    <li>Préparation des annexes déclaratives</li>
+                    <li>Recommandations d'optimisation légale</li>
+                </ul>
+                <div class="service-price">Forfait ou régie selon complexité</div>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                </div>
+                <h3>Transmission patrimoniale</h3>
+                <p>Accompagnement des héritiers et ayants droit dans la récupération et la valorisation d'actifs numériques successoraux.</p>
+                <ul class="service-features">
+                    <li>Inventaire exhaustif des actifs numériques</li>
+                    <li>Assistance technique à la récupération</li>
+                    <li>Valorisation pour déclaration de succession</li>
+                    <li>Documentation à destination du notaire</li>
+                </ul>
+                <div class="service-price">Forfait ou régie selon complexité</div>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/><path d="M11 8v6"/><path d="M8 11h6"/></svg>
+                </div>
+                <h3>Due diligence</h3>
+                <p>Audit des actifs numériques dans le cadre d'opérations d'acquisition, d'investissement ou de levée de fonds.</p>
+                <ul class="service-features">
+                    <li>Vérification des réserves (Proof of Reserves)</li>
+                    <li>Analyse de l'origine des fonds</li>
+                    <li>Rapport détaillé pour investisseurs</li>
+                    <li>Identification des facteurs de risque</li>
+                </ul>
+                <div class="service-price">Forfait ou régie selon complexité</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Section -->
+    <section class="process" id="process">
+        <div class="process-header">
+            <div class="section-label">Notre méthodologie</div>
+            <h2>Un processus structuré et confidentiel</h2>
+        </div>
+        <div class="process-steps">
+            <div class="process-step">
+                <div class="step-number">1</div>
+                <h4>Consultation initiale</h4>
+                <p>Entretien confidentiel pour analyser votre situation et définir vos objectifs.</p>
+            </div>
+            <div class="process-step">
+                <div class="step-number">2</div>
+                <h4>Collecte documentaire</h4>
+                <p>Récupération sécurisée de vos historiques de transactions et données on-chain.</p>
+            </div>
+            <div class="process-step">
+                <div class="step-number">3</div>
+                <h4>Analyse et rapport</h4>
+                <p>Constitution d'un dossier complet avec traçabilité vérifiable et documentée.</p>
+            </div>
+            <div class="process-step">
+                <div class="step-number">4</div>
+                <h4>Accompagnement</h4>
+                <p>Suivi personnalisé jusqu'à la validation par l'établissement bancaire ou l'administration concernée.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Expertise Section -->
+    <section class="expertise" id="expertise">
+        <div class="expertise-content">
+            <div class="expertise-text">
+                <div class="section-label">Notre expertise</div>
+                <h2>Une équipe pluridisciplinaire au service de votre conformité</h2>
+                <p>ChainBridge réunit une équipe de juristes disposant d'une expertise pointue à l'intersection du droit, de la finance et des technologies blockchain.</p>
+                <p>Notre connaissance approfondie du cadre réglementaire belge et européen, combinée à une maîtrise technique des actifs numériques, nous permet d'accompagner nos clients avec rigueur et efficacité.</p>
+                <p>Nous entretenons des relations de travail établies avec les principales institutions financières belges, les autorités fiscales et les études notariales.</p>
+                <div class="expertise-credentials">
+                    <div class="credential">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 21 1.9-5.7a8.5 8.5 0 1 1 3.8 3.8z"/></svg>
+                        Équipe de juristes
+                    </div>
+                    <div class="credential">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" x2="12" y1="20" y2="10"/><line x1="18" x2="18" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="16"/></svg>
+                        Maîtrise en Finance
+                    </div>
+                    <div class="credential">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/></svg>
+                        Maîtrise en Droit fiscal
+                    </div>
+                    <div class="credential">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                        Expérience tech & crypto
+                    </div>
+                </div>
+            </div>
+            <div class="expertise-visual">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+                    </div>
+                    <div class="stat-info">
+                        <h4>Depuis 2017</h4>
+                        <p>Dans l'écosystème crypto</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                    </div>
+                    <div class="stat-info">
+                        <h4>Confidentialité</h4>
+                        <p>Absolue et garantie</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" x2="21" y1="22" y2="22"/><line x1="6" x2="6" y1="18" y2="11"/><line x1="10" x2="10" y1="18" y2="11"/><line x1="14" x2="14" y1="18" y2="11"/><line x1="18" x2="18" y1="18" y2="11"/><polygon points="12 2 20 7 4 7"/></svg>
+                    </div>
+                    <div class="stat-info">
+                        <h4>Réseau établi</h4>
+                        <p>Banques, notaires, SPF</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ethics Section -->
+    <section class="ethics">
+        <div class="ethics-content">
+            <div class="ethics-text">
+                <div class="section-label">Notre engagement</div>
+                <h2>Éthique et intégrité au cœur de notre pratique</h2>
+                <p>La grande majorité de nos clients sont des investisseurs de longue date, des épargnants prudents ou des héritiers légitimes. Ils n'ont rien à cacher — ils ont simplement besoin d'aide pour documenter correctement l'origine de leurs actifs face à des exigences réglementaires de plus en plus complexes.</p>
+                <p>Nous nous engageons à traiter chaque dossier avec la plus stricte confidentialité. Les informations que vous nous confiez sont protégées par le secret professionnel et ne seront jamais partagées sans votre consentement explicite.</p>
+                <p>En contrepartie, nous nous réservons le droit de refuser tout mandat qui ne répondrait pas à nos standards éthiques. ChainBridge n'accompagne pas les dossiers présentant des indices de blanchiment, de fraude fiscale ou d'activités illicites. Cette rigueur est la garantie de notre crédibilité auprès des institutions financières avec lesquelles nous collaborons.</p>
+            </div>
+            <div class="ethics-principles">
+                <div class="principle-card">
+                    <div class="principle-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    </div>
+                    <h4>Confidentialité absolue</h4>
+                    <p>Vos données sont protégées par le secret professionnel. Aucune information n'est partagée sans votre accord.</p>
+                </div>
+                <div class="principle-card">
+                    <div class="principle-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/><path d="m9 12 2 2 4-4"/></svg>
+                    </div>
+                    <h4>Sélectivité des mandats</h4>
+                    <p>Nous déclinons les dossiers ne répondant pas à nos critères d'intégrité. Cette exigence protège nos clients comme notre réputation.</p>
+                </div>
+                <div class="principle-card">
+                    <div class="principle-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="16" y2="12"/><line x1="12" x2="12.01" y1="8" y2="8"/></svg>
+                    </div>
+                    <h4>Transparence totale</h4>
+                    <p>Nous vous informons clairement des forces et faiblesses de votre dossier, sans fausses promesses.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta" id="contact">
+        <div class="cta-content">
+            <div class="section-label">Nous contacter</div>
+            <h2>Sollicitez une consultation initiale</h2>
+            <p>Décrivez-nous votre situation. Notre équipe vous recontactera sous 24 heures ouvrées pour un premier entretien confidentiel et sans engagement.</p>
+            <form class="contact-form" onsubmit="event.preventDefault(); alert('Merci pour votre demande. Notre équipe vous recontactera sous 24 heures ouvrées.');">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="name">Nom complet</label>
+                        <input type="text" id="name" name="name" required placeholder="Votre nom">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Adresse email</label>
+                        <input type="email" id="email" name="email" required placeholder="votre@email.be">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="portfolio">Valorisation estimée des actifs</label>
+                        <select id="portfolio" name="portfolio">
+                            <option value="">Sélectionner...</option>
+                            <option value="<50k">Moins de 50 000€</option>
+                            <option value="50-100k">50 000€ - 100 000€</option>
+                            <option value="100-500k">100 000€ - 500 000€</option>
+                            <option value=">500k">Plus de 500 000€</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="service">Prestation souhaitée</label>
+                        <select id="service" name="service">
+                            <option value="">Sélectionner...</option>
+                            <option value="aml">Rapatriement bancaire</option>
+                            <option value="fiscal">Conformité fiscale</option>
+                            <option value="succession">Transmission patrimoniale</option>
+                            <option value="duediligence">Due diligence</option>
+                            <option value="autre">Autre demande</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="message">Description de votre situation</label>
+                    <textarea id="message" name="message" placeholder="Décrivez brièvement votre situation et l'objet de votre demande..."></textarea>
+                </div>
+                <div class="form-submit">
+                    <button type="submit" class="btn-primary" style="width: 100%;">Envoyer ma demande</button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-brand">
+                <a href="#" class="logo">Chain<span>Bridge</span></a>
+                <p>Cabinet belge spécialisé dans la conformité des actifs numériques. Expertise juridique, financière et technique au service de votre patrimoine digital.</p>
+            </div>
+            <div class="footer-links">
+                <h4>Prestations</h4>
+                <ul>
+                    <li><a href="#services">Rapatriement bancaire</a></li>
+                    <li><a href="#services">Conformité fiscale</a></li>
+                    <li><a href="#services">Transmission patrimoniale</a></li>
+                    <li><a href="#services">Due diligence</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Contact</h4>
+                <ul>
+                    <li><a href="mailto:contact@chainbridge.be">contact@chainbridge.be</a></li>
+                    <li><a href="#contact">Formulaire de contact</a></li>
+                    <li>Bruxelles, Belgique</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 ChainBridge. Tous droits réservés.</p>
+            <div class="footer-legal">
+                <a href="#">Mentions légales</a>
+                <a href="#">Politique de confidentialité</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
